@@ -25,6 +25,7 @@ $(document).ready(async function() {
   const $ownStories = $("#my-articles");
   const $navLogin = $("#nav-login");
   const $navLogOut = $("#nav-logout");
+  const $navLoggedinOptions = $('#nav-loggedin-options');
 
   // if there is a token in localStorage, call User.stayLoggedIn
   //  to get an instance of User with the right details
@@ -244,7 +245,7 @@ $(document).ready(async function() {
 
   function showNavForLoggedInUser() {
     $navLogin.hide();
-    $navLogOut.show();
+    $navLoggedinOptions.show();
   }
 
   // simple function to pull the hostname from a URL
