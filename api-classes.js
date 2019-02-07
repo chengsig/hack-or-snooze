@@ -88,11 +88,20 @@ class User {
   }
 
   async addFavStory(storyID){
+    console.log(`${BASE_URL}/users/${this.username}/favorites/${storyID}`, token);
+    
+    await $.post(`${BASE_URL}/users/${this.username}/favorites/${storyID}`, {token: token});
+
+  }
+
+  async deleteFavStory(storyID){
     console.log(`${BASE_URL}/users/${this.username}/favorites/${storyID}`);
-    const response = await $.post(`${BASE_URL}/users/${this.username}/favorites/${storyID}`, {token: token}, function(res) {
-      console.log("worked!", res);
+    
+    await $.ajax({
+      url: `${BASE_URL}/users/${this.username}/favorites/${storyID}`,
+      method: 'DELETE',
+      data: {token: token}
     });
-    // console.log("response", response);
   }
 
   /*

@@ -219,13 +219,18 @@ $(document).ready(async function() {
     for(let favStory of $(user.favorites)){
       let favStoryID = favStory.storyId;
       $(`#${favStoryID}`).find(".fa-heart").toggleClass("far fas");
-      
     }
+
   }
 
   $allStoriesList.on("click", "li .fa-heart", function(e){
+    if($(e.target).hasClass("far")){
+      user.addFavStory($(e.target).closest("li").attr('id'));
+    } else {
+      user.deleteFavStory($(e.target).closest("li").attr('id'));
+    }
+  
     $(e.target).toggleClass("far fas");
-    user.addFavStory($(e.target).closest("li").attr('id'));
     //console.log($(e.target).closest("li").attr('id'))
   })
 
