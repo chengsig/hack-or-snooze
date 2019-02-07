@@ -36,7 +36,7 @@ $(document).ready(async function() {
 
     // let's build out some stories
     await generateStories();
-
+    checkForFavs();
     // and then display the navigation
     showNavForLoggedInUser();
 
@@ -177,7 +177,6 @@ $(document).ready(async function() {
     // loop through all of our stories and generate HTML for them
     storyList.stories.forEach(generateNewStory)
 
-    checkForFavs();
     
     // for (let story of storyList.stories) {
     //   generateNewStory(story);
