@@ -65,6 +65,7 @@ $(document).ready(async function() {
     user = userInstance;
     LOGGED_IN = true;
     loginAndSubmitForm();
+    checkForFavs();
   });
 
   /**
