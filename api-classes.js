@@ -8,6 +8,7 @@ class StoryList {
   constructor(stories) {
     this.stories = stories;
   }
+
   /**
    * This method is designed to be called to generate a new StoryList.
    *  It calls the API, builds an array of Story instances, makes a single StoryList
@@ -23,12 +24,12 @@ class StoryList {
     const storyList = new StoryList(stories)
     return storyList;
   }
+
   /**
-     * Method to make a POST request to /stories and add the new story to the list
-     The function should accept the current instance of User who will post the story
-     It should also accept an object which with a title, author, and url
-     */
-  
+   * Method to make a POST request to /stories and add the new story to the list
+   The function should accept the current instance of User who will post the story
+    It should also accept an object which with a title, author, and url
+    */
   async addStory(user, newStoryObj) { 
     //post to JSON using new story form inputs// function activated from script.js
     let responsePostStory = await $.post(`${BASE_URL}/stories`, {token: user.loginToken, story: newStoryObj});
@@ -87,35 +88,37 @@ class User {
     return newUser;
   }
 
+  /** 
+   * Class method for adding a new favorite story to database with a POST request; accepts the story ID
+   */
   async addFavStory(storyID){
-    // console.log(`${BASE_URL}/users/${this.username}/favorites/${storyID}`);
-
+    // add favorite to database
     let response = await $.post(`${BASE_URL}/users/${this.username}/favorites/${storyID}`, {token: user.loginToken});
     
+    // add favorite to local storage
     let newStory = new Story(response.user.favorites[response.user.favorites.length-1]);
 
-    console.log(this.favorites);
     this.favorites.push(newStory);
-    console.log(this.favorites);
-
   }
 
+  /** 
+   * Class method for deleting a favorite story from database with a POST request; accepts the story ID
+   */
   async deleteFavStory(storyID){
-    // console.log(`${BASE_URL}/users/${this.username}/favorites/${storyID}`);
 
+    // first delete favorite from localstorage
     for(let i =0; i<this.favorites.length; i++){
       if(this.favorites[i].storyId === storyID){
         this.favorites.splice(i,1);
       }
     }
     
+    // delete favorite from database
     let response = await $.ajax({
       url: `${BASE_URL}/users/${this.username}/favorites/${storyID}`,
       method: 'DELETE',
       data: {token: user.loginToken}
     });
-
-    console.log(response);
   }
 
   /*
