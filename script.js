@@ -1,4 +1,4 @@
-// global flag to easily tell if we're logged in
+/// global flag to easily tell if we're logged in
 let LOGGED_IN = false;
 
 // global storyList variable
@@ -111,7 +111,6 @@ $(document).ready(async function() {
       generateFavStories();
       $favoritedArticles.removeClass("hidden");
       $allStoriesList.addClass("hidden");
-      checkForFavs();
   });
 
   /**
@@ -119,9 +118,9 @@ $(document).ready(async function() {
    */
   $("body").on("click", "#nav-all", async function() {
     hideElements();
-    await generateStories();
+    // await generateStories();
     $allStoriesList.show();
-    $favoritedArticles.hide();
+    $favoritedArticles.addClass("hidden");
     checkForFavs();
   });
 
@@ -197,15 +196,17 @@ $(document).ready(async function() {
   } 
 
   function generateNewFavStory(favStory){
-    const favStoryHTML = generateStoryHTML(favStory);
+    const favStoryHTML = generateStoryHTML(favStory,"fas");
+    // favStoryHTML.replace("far","fas");
     $favoritedArticles.append(favStoryHTML);
   }
   /**
    * A function to render HTML for an individual Story instance
    */
 
-  function generateStoryHTML(story) {
+  function generateStoryHTML(story, favStatus = "far") {
     let hostName = getHostName(story.url);
+    let favoriteStatus = favStatus;
 
     // render story markup
     const storyMarkup = $(
@@ -218,7 +219,7 @@ $(document).ready(async function() {
         
         <small class="article-username">posted by ${story.username}</small>
 
-        <i class="far fa-heart"></i>
+        <i class="${favoriteStatus} fa-heart"></i>
       </li>`
     );
 
