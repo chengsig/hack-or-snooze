@@ -31,7 +31,7 @@ class StoryList {
   
   async addStory(user, newStoryObj) { 
     //post to JSON using new story form inputs// function activated from script.js
-    let responsePostStory = await $.post(`${BASE_URL}/stories`, {token: token, story: newStoryObj});
+    let responsePostStory = await $.post(`${BASE_URL}/stories`, {token: user.loginToken, story: newStoryObj});
     // console.log("respPost", responsePostStory.story);
     let newStory = new Story(responsePostStory.story);
     //console.log(this): StoryList: {stories: Array(25)} //stories: [Story{}, Story{}, Story{}...]
