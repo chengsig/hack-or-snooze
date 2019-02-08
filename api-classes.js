@@ -102,12 +102,20 @@ class User {
 
   async deleteFavStory(storyID){
     // console.log(`${BASE_URL}/users/${this.username}/favorites/${storyID}`);
+
+    for(let i =0; i<this.favorites.length; i++){
+      if(this.favorites[i].storyId === storyID){
+        this.favorites.splice(i,1);
+      }
+    }
     
-    await $.ajax({
+    let response = await $.ajax({
       url: `${BASE_URL}/users/${this.username}/favorites/${storyID}`,
       method: 'DELETE',
       data: {token: user.loginToken}
     });
+
+    console.log(response);
   }
 
   /*
