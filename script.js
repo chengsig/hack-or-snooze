@@ -26,6 +26,7 @@ $(document).ready(async function() {
   const $navLogin = $("#nav-login");
   const $navLogOut = $("#nav-logout");
   const $navLoggedinOptions = $('#nav-loggedin-options');
+  const $favoritedArticles = $('#favorited-articles');
 
   // if there is a token in localStorage, call User.stayLoggedIn
   //  to get an instance of User with the right details
@@ -108,6 +109,8 @@ $(document).ready(async function() {
 
   $('#favorites').on("click",async function(e){
       generateFavStories();
+      $favoritedArticles.removeClass("hidden");
+      $allStoriesList.addClass("hidden");
       checkForFavs();
   });
 
@@ -118,6 +121,7 @@ $(document).ready(async function() {
     hideElements();
     await generateStories();
     $allStoriesList.show();
+    $favoritedArticles.hide();
     checkForFavs();
   });
 
@@ -185,23 +189,17 @@ $(document).ready(async function() {
     // loop through all of our stories and generate HTML for them
     storyList.stories.forEach(generateNewStory)
 
-    
-    // for (let story of storyList.stories) {
-    //   generateNewStory(story);
-    // }
-
-    // 
-    
-    // cats.forEach(console.log)
-
   }
 
   async function generateFavStories(){
-    $allStoriesList.empty();
+    //$allStoriesList.empty();
+    user.favorites.forEach(generateNewFavStory);
+  } 
 
-    user.favorites.forEach(generateNewStory);
+  function generateNewFavStory(favStory){
+    const favStoryHTML = generateStoryHTML(favStory);
+    $favoritedArticles.append(favStoryHTML);
   }
-
   /**
    * A function to render HTML for an individual Story instance
    */

@@ -189,7 +189,7 @@ li .fa-heart {
 #filtered-articles,
 #my-articles {
   list-style: none;
-  padding-left: 20px;
+  /* padding-left: 20px; */
 }
 
 .account-forms-container {
