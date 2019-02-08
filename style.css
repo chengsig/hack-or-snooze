@@ -185,6 +185,12 @@ li .fa-heart {
   top: 1rem;
 }
 
+li .fa-trash-alt{
+  position: absolute;
+  right: 1rem;
+  bottom: .5rem;
+}
+
 #favorited-articles,
 #filtered-articles,
 #my-articles {

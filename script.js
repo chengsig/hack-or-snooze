@@ -241,6 +241,7 @@ $(document).ready(async function() {
         <small class="article-username">posted by ${story.username}</small>
 
         <i class="${favoriteStatus} fa-heart"></i>
+        <i class="fas fa-trash-alt"></i>
       </li>`
     );
 
