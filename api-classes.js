@@ -90,7 +90,14 @@ class User {
   async addFavStory(storyID){
     // console.log(`${BASE_URL}/users/${this.username}/favorites/${storyID}`);
 
-    await $.post(`${BASE_URL}/users/${this.username}/favorites/${storyID}`, {token: user.loginToken});
+    let response = await $.post(`${BASE_URL}/users/${this.username}/favorites/${storyID}`, {token: user.loginToken});
+    
+    let newStory = new Story(response.user.favorites[response.user.favorites.length-1]);
+
+    console.log(this.favorites);
+    this.favorites.push(newStory);
+    console.log(this.favorites);
+
   }
 
   async deleteFavStory(storyID){

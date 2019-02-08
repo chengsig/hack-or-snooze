@@ -106,7 +106,8 @@ $(document).ready(async function() {
     $allStoriesList.toggle();
   });
 
-  $('#favorites').on("click", function(e){
+  $('#favorites').on("click", async function(e){
+    console.log(user.favorites);
     if($(e.target).text() === 'favorites'){
       $(e.target).text('all');
       generateFavStories();
@@ -206,6 +207,7 @@ $(document).ready(async function() {
 
   async function generateFavStories(){
     $allStoriesList.empty();
+
     user.favorites.forEach(generateNewStory);
   }
 
