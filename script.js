@@ -125,6 +125,7 @@ $(document).ready(async function() {
     hideElements();
     await generateStories();
     $allStoriesList.show();
+    checkForFavs();
   });
 
   /**
