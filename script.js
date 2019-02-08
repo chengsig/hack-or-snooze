@@ -105,6 +105,19 @@ $(document).ready(async function() {
     $allStoriesList.toggle();
   });
 
+  $('#favorites').on("click", function(e){
+    if($(e.target).text() === 'favorites'){
+      $(e.target).text('all');
+      generateFavStories();
+      checkForFavs();
+    }
+    else if($(e.target).text() === 'all'){
+      $(e.target).text('favorites');
+      generateStories();
+      checkForFavs();
+    }
+  })
+
   /**
    * Event handler for Navigation to Homepage
    */
@@ -187,6 +200,11 @@ $(document).ready(async function() {
     
     // cats.forEach(console.log)
 
+  }
+
+  async function generateFavStories(){
+    $allStoriesList.empty();
+    user.favorites.forEach(generateNewStory);
   }
 
   /**
