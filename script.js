@@ -107,6 +107,9 @@ $(document).ready(async function() {
     $allStoriesList.toggle();
   });
 
+  /**
+   * Event Handler for Clicking Favorites Btn
+   */
   $('#favorites').on("click",async function(e){
     $favoritedArticles.empty();
     generateFavStories();
@@ -164,14 +167,19 @@ $(document).ready(async function() {
     generateNewStory(newStory);
   });
 
-  /**
-   * Append new story to DOM
+  /** 
+   * Event handler for favorite heart icon
    */
-  function generateNewStory(newStory) {
-    const result = generateStoryHTML(newStory);
-    $allStoriesList.append(result);
-    
-  }
+  $allStoriesList.on("click", "li .fa-heart", function(e){
+    if($(e.target).hasClass("far")){
+      user.addFavStory($(e.target).closest("li").attr('id'));
+    } else {
+      user.deleteFavStory($(e.target).closest("li").attr('id'));
+    }
+  
+    $(e.target).toggleClass("far fas");
+  })
+  
 
   /**
    * A rendering function to call the StoryList.getStories static method,
@@ -188,23 +196,35 @@ $(document).ready(async function() {
 
     // loop through all of our stories and generate HTML for them
     storyList.stories.forEach(generateNewStory)
-
   }
 
-  async function generateFavStories(){
-    //$allStoriesList.empty();
+  /**
+   * Generates favorite stories from user's list of favorite stories
+   */
+  async function generateFavStories() {
     user.favorites.forEach(generateNewFavStory);
   } 
 
+  /**
+   * Append new story to DOM
+   */
+  function generateNewStory(newStory) {
+    const result = generateStoryHTML(newStory);
+    $allStoriesList.append(result);
+    
+  }
+
+  /**
+   * Append favorite stories to DOM
+   */
   function generateNewFavStory(favStory){
     const favStoryHTML = generateStoryHTML(favStory,"fas");
-    // favStoryHTML.replace("far","fas");
     $favoritedArticles.append(favStoryHTML);
   }
+
   /**
    * A function to render HTML for an individual Story instance
    */
-
   function generateStoryHTML(story, favStatus = "far") {
     let hostName = getHostName(story.url);
     let favoriteStatus = favStatus;
@@ -227,26 +247,16 @@ $(document).ready(async function() {
     return storyMarkup;
   }
 
+  /**
+   * a function for finding favorite stories and filling heart icons
+   */
   function checkForFavs() {
-
     for(let favStory of $(user.favorites)){
       let favStoryID = favStory.storyId;
+
       $(`#${favStoryID}`).find(".fa-heart").toggleClass("far fas");
     }
-
   }
-
-  $allStoriesList.on("click", "li .fa-heart", function(e){
-    if($(e.target).hasClass("far")){
-      user.addFavStory($(e.target).closest("li").attr('id'));
-    } else {
-      user.deleteFavStory($(e.target).closest("li").attr('id'));
-    }
-  
-    $(e.target).toggleClass("far fas");
-    //console.log($(e.target).closest("li").attr('id'))
-  })
-
 
   // hide all elements in elementsArr
   function hideElements() {
