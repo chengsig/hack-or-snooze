@@ -106,19 +106,10 @@ $(document).ready(async function() {
     $allStoriesList.toggle();
   });
 
-  $('#favorites').on("click", async function(e){
-    console.log(user.favorites);
-    if($(e.target).text() === 'favorites'){
-      $(e.target).text('all');
+  $('#favorites').on("click",async function(e){
       generateFavStories();
       checkForFavs();
-    }
-    else if($(e.target).text() === 'all'){
-      $(e.target).text('favorites');
-      generateStories();
-      checkForFavs();
-    }
-  })
+  });
 
   /**
    * Event handler for Navigation to Homepage
