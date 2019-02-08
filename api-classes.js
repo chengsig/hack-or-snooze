@@ -42,6 +42,19 @@ class StoryList {
     // TODO - Implement this functions!
     // this function should return the newly created story so it can be used in the script.js file where it will be appended to the DOM
   }
+
+  /**
+   * Method to make a DELETE request to /stories and delete the story from the list.
+   * The function accepts a story id
+   */
+  async deleteStory(storyID){
+    let response = await $.ajax({
+      url: `${BASE_URL}/stories/${storyID}`,
+      method: 'DELETE',
+      data: {token: user.loginToken}
+    });
+    console.log(response)
+  }
 }
 
 

@@ -179,6 +179,16 @@ $(document).ready(async function() {
   
     $(e.target).toggleClass("far fas");
   })
+
+  /**
+   * Event handler for trach/delete/remove icon
+   */
+  $allStoriesList.on("click", "li .fa-trash-alt", async function(e){
+    let storyID = $(e.target).closest("li").attr('id');
+    await storyList.deleteStory(storyID);
+    //remove from DOM
+    $(e.target).closest("li").remove();
+  })
   
 
   /**
