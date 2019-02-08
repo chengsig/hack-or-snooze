@@ -110,7 +110,7 @@ $(document).ready(async function() {
   $('#favorites').on("click",async function(e){
       generateFavStories();
       $favoritedArticles.removeClass("hidden");
-      $allStoriesList.addClass("hidden");
+      $allStoriesList.hide();
   });
 
   /**
