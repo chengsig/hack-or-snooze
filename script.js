@@ -27,6 +27,7 @@ $(document).ready(async function() {
   const $navLogOut = $("#nav-logout");
   const $navLoggedinOptions = $('#nav-loggedin-options');
   const $favoritedArticles = $('#favorited-articles');
+  const $removeIcon = '<i class="fas fa-trash-alt"></i>';
 
   // if there is a token in localStorage, call User.stayLoggedIn
   //  to get an instance of User with the right details
@@ -47,6 +48,7 @@ $(document).ready(async function() {
   } else {
     // we're not logged in, let's just generate stories and stop there
     await generateStories();
+    console.log("here");
   }
 
   /**
@@ -122,10 +124,9 @@ $(document).ready(async function() {
    */
   $("body").on("click", "#nav-all", async function() {
     hideElements();
-    // await generateStories();
     $allStoriesList.show();
     $favoritedArticles.addClass("hidden");
-    checkForFavs();
+    $submitForm.show();
   });
 
   /**
@@ -164,26 +165,27 @@ $(document).ready(async function() {
     
     let newStory = await storyList.addStory(user, newStoryObj);
 
-    generateNewStory(newStory);
+    let result = generateStoryHTML(newStory, $removeIcon);
+
+    $allStoriesList.append(result);
   });
 
   /** 
    * Event handler for favorite heart icon
    */
-  $allStoriesList.on("click", "li .fa-heart", function(e){
+  $("body").on("click", "li .fa-heart", function(e){
     if($(e.target).hasClass("far")){
       user.addFavStory($(e.target).closest("li").attr('id'));
     } else {
       user.deleteFavStory($(e.target).closest("li").attr('id'));
     }
-  
     $(e.target).toggleClass("far fas");
   })
 
   /**
    * Event handler for trach/delete/remove icon
    */
-  $allStoriesList.on("click", "li .fa-trash-alt", async function(e){
+  $("body").on("click", "li .fa-trash-alt", async function(e){
     let storyID = $(e.target).closest("li").attr('id');
     await storyList.deleteStory(storyID);
     //remove from DOM
@@ -203,7 +205,6 @@ $(document).ready(async function() {
     storyList = storyListInstance;
     // empty out that part of the page
     $allStoriesList.empty();
-
     // loop through all of our stories and generate HTML for them
     storyList.stories.forEach(generateNewStory)
   }
@@ -219,25 +220,34 @@ $(document).ready(async function() {
    * Append new story to DOM
    */
   function generateNewStory(newStory) {
-    const result = generateStoryHTML(newStory);
+    var ownStoryStatus = "";
+    if(LOGGED_IN){
+      ownStoryStatus = checkOwnStory(newStory);
+    }
+    const result = generateStoryHTML(newStory, ownStoryStatus);
+
     $allStoriesList.append(result);
-    
   }
 
   /**
    * Append favorite stories to DOM
    */
   function generateNewFavStory(favStory){
-    const favStoryHTML = generateStoryHTML(favStory,"fas");
+    var ownStoryStatus = checkOwnStory(favStory);
+    const favStoryHTML = generateStoryHTML(favStory,ownStoryStatus,"fas");
     $favoritedArticles.append(favStoryHTML);
   }
+
+
+  
 
   /**
    * A function to render HTML for an individual Story instance
    */
-  function generateStoryHTML(story, favStatus = "far") {
+  function generateStoryHTML(story, ownStoryStatus = "", favStatus = "far") {
     let hostName = getHostName(story.url);
     let favoriteStatus = favStatus;
+    let ownStory = ownStoryStatus;
 
     // render story markup
     const storyMarkup = $(
@@ -251,7 +261,7 @@ $(document).ready(async function() {
         <small class="article-username">posted by ${story.username}</small>
 
         <i class="${favoriteStatus} fa-heart"></i>
-        <i class="fas fa-trash-alt"></i>
+        ${ownStory}
       </li>`
     );
 
@@ -267,6 +277,18 @@ $(document).ready(async function() {
 
       $(`#${favStoryID}`).find(".fa-heart").toggleClass("far fas");
     }
+  }
+
+  /**
+   * a funxtion for checking if story in question is own story and returns correct param to be passed in
+   */
+  function checkOwnStory(storyInQuestion){
+    for(let ownStory of $(user.ownStories)){
+      if(storyInQuestion.storyId === ownStory.storyId){
+        return $removeIcon;
+      }
+    }
+    return "";
   }
 
   // hide all elements in elementsArr

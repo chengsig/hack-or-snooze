@@ -33,11 +33,11 @@ class StoryList {
   async addStory(user, newStoryObj) { 
     //post to JSON using new story form inputs// function activated from script.js
     let responsePostStory = await $.post(`${BASE_URL}/stories`, {token: user.loginToken, story: newStoryObj});
-    // console.log("respPost", responsePostStory.story);
+
     let newStory = new Story(responsePostStory.story);
     //console.log(this): StoryList: {stories: Array(25)} //stories: [Story{}, Story{}, Story{}...]
     this.stories.push(newStory);
-    // console.log("add story", newStory);
+
     return newStory;
     // TODO - Implement this functions!
     // this function should return the newly created story so it can be used in the script.js file where it will be appended to the DOM
@@ -53,7 +53,6 @@ class StoryList {
       method: 'DELETE',
       data: {token: user.loginToken}
     });
-    console.log(response)
   }
 }
 
