@@ -47,6 +47,8 @@ class StoryList {
    * Method to make a DELETE request to /stories and delete the story from the list.
    * The function accepts a story id
    */
+  //TODO - 1. refactor
+  //       2. using filter
   async deleteStory(storyID){
     let response = await $.ajax({
       url: `${BASE_URL}/stories/${storyID}`,
@@ -116,14 +118,29 @@ class User {
   /** 
    * Class method for deleting a favorite story from database with a POST request; accepts the story ID
    */
+  // async addFavStory(storyID){
+  //   await this._toggleFavorite(storyID)
+  // }
+  
   async deleteFavStory(storyID){
-
-    // first delete favorite from localstorage
+    // await this._toggleFavorite(storyID, false)
+  // }
+    // first delete favorite from the favorites array
     for(let i =0; i<this.favorites.length; i++){
       if(this.favorites[i].storyId === storyID){
         this.favorites.splice(i,1);
       }
     }
+//TODO - refactor ajax request: create internal class function to talk to backend in StoryList
+    // async _toggleFavorite(storyID, bool=true){
+    //   const verb = bool ? "POST" : "DELETE"
+    //   let response = await $.ajax({
+    //     method: verb,
+    //     url: `${BASE_URL}/users/${this.username}/favorites/${storyID}`, 
+    //     data: { token: user.loginToken})
+    // }
+
+    // this.favorites = this.favorites.filter(v => v.storyId !== storyID)
     
     // delete favorite from database
     let response = await $.ajax({

@@ -174,10 +174,11 @@ $(document).ready(async function() {
    * Event handler for favorite heart icon
    */
   $("body").on("click", "li .fa-heart", function(e){
+    const $target = $(e.target).closest("li").attr('id')
     if($(e.target).hasClass("far")){
-      user.addFavStory($(e.target).closest("li").attr('id'));
+      user.addFavStory($target);
     } else {
-      user.deleteFavStory($(e.target).closest("li").attr('id'));
+      user.deleteFavStory($target);
     }
     $(e.target).toggleClass("far fas");
   })
